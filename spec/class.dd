@@ -207,7 +207,8 @@ $(H2 $(LNAME2 super_class, Super Class))
 
         All classes inherit from a super class. If one is not specified,
         it inherits from $(REF1 Object, object). `Object` forms the root
-        of the D class inheritance hierarchy.
+        of the D class inheritance hierarchy. $(D noreturn) is not a class
+        type and cannot be used as super class.
 
 $(H2 $(LNAME2 member-functions, Member Functions (a.k.a. Methods)))
 

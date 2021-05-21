@@ -140,6 +140,7 @@ $(H2 $(LNAME2 data_type_compat, Data Type Compatibility))
         $(TABLE2 D And C Type Equivalence,
     $(ELABORATE_HEADER)
         $(TROW2 void, void)
+        $(TROW2 noreturn, void)
         $(TROW2 byte, signed char)
         $(TROW2 ubyte, unsigned char)
         $(TROW2 char, char, (chars are unsigned in D))

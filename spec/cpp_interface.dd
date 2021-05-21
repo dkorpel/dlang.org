@@ -729,6 +729,11 @@ $(H2 $(LNAME2 data-type-compatibility, Data Type Compatibility))
     )
 
     $(TROW
+    $(ARGS $(B noreturn)),
+    $(ARGS $(B void))
+    )
+
+    $(TROW
     $(ARGS $(B byte)),
     $(ARGS $(B signed char))
     )

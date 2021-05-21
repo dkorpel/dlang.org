@@ -1188,6 +1188,18 @@ $(GNAME CastExpression):
         }
         ----
 
+    $(P Casting an expression to $(D noreturn) is equivalent to calling $(D assert(0)).
+        The expression's side effects will be executed before halting the program.
+
+        ----
+        int x;
+        int bar();
+        auto foo()
+        {
+            cast(noreturn) (x = bar()); // same as {x = bar(); assert(0);}
+        }
+        ----
+
 $(H2 $(LNAME2 pow_expressions, Pow Expressions))
 
 $(GRAMMAR

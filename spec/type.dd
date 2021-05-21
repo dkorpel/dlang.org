@@ -542,6 +542,14 @@ $(GNAME MixinType):
         }
         ---
 
+$(H2 $(LNAME2 bottom_type, Bottom type))
+    $(P The bottom type is the sub-type of all types.)
+
+    $(OL
+        $(LI $(D throw new Exception("")) )
+        $(LI $(D assert(0); ) )
+    )
+`throw new Exception()
 
 $(H2 $(LNAME2 aliased-types, Aliased Types))
 
@@ -557,6 +565,10 @@ $(H3 $(LNAME2 ptrdiff_t, $(D ptrdiff_t)))
 $(H3 $(LNAME2 string, $(D string)))
 
     $(P A $(DDSUBLINK spec/arrays, strings, $(I string) is a special case of an array.))
+
+$(H3 $(LNAME2 noreturn, $(D noreturn)))
+
+    $(P $(D noreturn) is an alias to the bottom type)
 
 $(SPEC_SUBNAV_PREV_NEXT declaration, Declarations, property, Properties)
 )
