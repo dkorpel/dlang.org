@@ -659,6 +659,48 @@ $(GNAME typeof-specifier):
     $(D typeof $(LPAREN)) $(GNAME type-name) $(D $(RPAREN))
 )
 
+    $(H3 $(LNAME2 __module, Module Declarations))
+
+    $(P C modules can be organized in D packages using a $(I CModuleDeclaration):)
+
+$(INFORMATIVE_GRAMMAR
+$(GNAME CModuleDeclaration):
+    $(D __module) $(GLINK2 module, ModuleFullyQualifiedName) $(D ;)
+)
+
+    $(P A `__module` declaration can appear anywhere in the top level scope.)
+
+    $(P When the first `__module` gets parsed, it functions the same as a $(GLINK2 module, module_declaration).)
+
+$(P Therefore, every `#include` containing a __module declaration should come after the file's own module declaration,
+or it will be overwritten.
+When you always put the __module declaration at the very top like in D, there won't be such problems.)
+
+$(CCODE
+#if __IMPORTC__
+__module hello.utils;
+#endif
+
+int sqr(int x) { return x * x; }
+)
+
+$(CCODE
+#if __IMPORTC__
+__module world.utils;
+#endif
+
+int max(int a, int b) { return a > b ? a : b; }
+)
+
+---
+import hello.utils;
+import world.utils;
+
+static assert(sqr(3) == 9);
+static assert(max(3, 5) == 5);
+---
+
+
     $(H3 $(LNAME2 __import, Import Declarations))
 
     $(P Modules can be imported with a $(I CImportDeclaration):)
