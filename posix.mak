@@ -149,7 +149,7 @@ endif
 DMD_DIR=../dmd
 PHOBOS_DIR=../phobos
 DRUNTIME_DIR=../dmd/druntime
-TOOLS_DIR=../tools
+TOOLS_DIR=$(DMD_DIR)/tools
 INSTALLER_DIR=../installer
 DUB_DIR=../dub
 
@@ -544,7 +544,7 @@ $W:
 ################################################################################
 
 $G/dlangspec.d : $(SPEC_DD) ${STABLE_DMD}
-	$(STABLE_RDMD) $(TOOLS_DIR)/catdoc.d -o$@ $(SPEC_DD)
+	$(STABLE_RDMD) tools/catdoc.d -o$@ $(SPEC_DD)
 
 $G/dlangspec.html : $(DDOC) ebook.ddoc $G/dlangspec.d $(DMD) $(DDOC_BIN)
 	$(DDOC_BIN_DMD) -conf= --spec-dir=$(SPEC_DIR) -Df$@ $(DDOC) ebook.ddoc $G/dlangspec.d
@@ -588,7 +588,7 @@ $G/%-${LATEST} :
 	git clone -b v${LATEST} --depth=1 ${GIT_HOME}/$(notdir $*) $@
 
 # Clone all main D repositories
-${DMD_DIR} ${PHOBOS_DIR} ${TOOLS_DIR} ${INSTALLER_DIR} ${DUB_DIR}:
+${DMD_DIR} ${PHOBOS_DIR} ${INSTALLER_DIR} ${DUB_DIR}:
 	git clone ${GIT_HOME}/$(notdir $(@F)) $@
 
 ${DMD_DIR}/VERSION : ${DMD_DIR}
@@ -876,7 +876,6 @@ test: test_dspec test/next_version.sh all | $(STABLE_DMD) $(DUB)
 LOOSE_CHANGELOG_FILES:=$(wildcard $(DMD_DIR)/changelog/*.dd) \
 				$(wildcard $(DRUNTIME_DIR)/changelog/*.dd) \
 				$(wildcard $(PHOBOS_DIR)/changelog/*.dd) \
-				$(wildcard $(TOOLS_DIR)/changelog/*.dd) \
 				$(wildcard $(INSTALLER_DIR)/changelog/*.dd) \
 				$(wildcard $(DUB_DIR)/changelog/*.dd)
 
@@ -886,13 +885,13 @@ $G/changelog/next-version: ${DMD_DIR}/VERSION
 	@echo $(NEXT_VERSION) > $@
 
 changelog/prerelease.dd: $G/changelog/next-version $(LOOSE_CHANGELOG_FILES) | \
-							${STABLE_DMD} $(TOOLS_DIR) $(INSTALLER_DIR) $(DUB_DIR)
+							${STABLE_DMD} ${DMD_DIR} $(INSTALLER_DIR) $(DUB_DIR)
 	$(STABLE_RDMD) $(TOOLS_DIR)/changed.d \
 		$(CHANGELOG_VERSION_STABLE) -o $@ --version "${NEXT_VERSION}" \
 		--prev-version="${LATEST}" --date "To be released"
 
 changelog/pending.dd: $G/changelog/next-version $(LOOSE_CHANGELOG_FILES) | \
-							${STABLE_DMD} $(TOOLS_DIR) $(INSTALLER_DIR) $(DUB_DIR)
+							${STABLE_DMD} ${DMD_DIR} $(INSTALLER_DIR) $(DUB_DIR)
 	$(STABLE_RDMD) $(TOOLS_DIR)/changed.d \
 		$(CHANGELOG_VERSION_MASTER) -o $@ --version "${NEXT_VERSION}" \
 		--prev-version="${LATEST}" --date "To be released"
@@ -908,7 +907,7 @@ prerelease_changelog: changelog/prerelease.dd html
 # Contributors listing: A list of all the awesome who made D possible
 ################################################################################
 
-$G/contributors_list.ddoc:  | $(STABLE_RDMD) $(TOOLS_DIR) $(INSTALLER_DIR)
+$G/contributors_list.ddoc:  | $(STABLE_RDMD) ${DMD_DIR} $(INSTALLER_DIR)
 	$(STABLE_RDMD) $(TOOLS_DIR)/contributors.d --format=ddoc "master" > $G/contributors_list.tmp
 	echo "NR_D_CONTRIBUTORS=$$(wc -l < $G/contributors_list.tmp)" > $@
 	echo "D_CONTRIBUTORS=" >> $@
